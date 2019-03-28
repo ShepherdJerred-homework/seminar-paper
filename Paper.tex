@@ -4,7 +4,7 @@
 % \usepackage{refcheck}
 
 % Margins and page size
-\usepackage[a4paper, margin=1in]{geometry}
+\usepackage[letterpaper, margin=1in]{geometry}
 
 % Babel
 \usepackage[english]{babel}
@@ -136,7 +136,7 @@ While using a proprietary API may allow a programmer to get more performance out
 \section{Graphics Rendering}
 Computer displays such as monitors use a 2D matrix of pixels to display images. The dimensions of this matrix is referred to as the display's resolution. Traditionally each pixel of a color display has a red, blue, and green value which all together determine the color of the pixel. Graphics rendering is how the color of these pixels are assigned to convey objects such as text, images, and user interfaces \cite{mckesson2018}. The higher the resolution of a display the more detail that can be shown on elements that are drawn. For reference, displays commonly range from standard HD at 1280x720, to very high resolutions such as 3840 x 2160, referred to as 4K. Standard HD is becoming less common while 4K is slowing gaining market share, especially on high-end monitors, TVs, and other consumer electronics.
 
-Graphics rendering is done by defining primitives such as points, lines, and triangles in a 3D space. After these points are defined, their locations are transformed and they are drawn on the screen through a process called rasterization \cite{mckesson2018}. Figure \ref{fig:triangle-rendering} shows a simple example of the rasterization process. The figure begins by defining a triangle which is composed of three 3D vectors. The rasterizer then determines which pixels the triangle overlaps through a process called scan conversion. One way to do this is to include pixels if their centers are contained within the element. Rasterization then produces fragments, which is an element that contributes to the final color of a pixel \cite{sellers2016}. The fragments are assigned a color in later steps of the rendering process and which might be changed when effects such as lighting are taken into account.
+Graphics rendering is done by defining primitives such as points, lines, and triangles in a 3D space. After these points are defined, their locations are transformed and then they are drawn on the screen through a process called rasterization \cite{mckesson2018}. Figure \ref{fig:triangle-rendering} shows a simple example of the rasterization process. The figure begins by defining a triangle which is composed of three 3D vectors. The rasterizer then determines which pixels the triangle overlaps through a process called scan conversion. One way to do this is to include pixels if their centers are contained within the element. Rasterization then produces fragments, which is an element that contributes to the final color of a pixel \cite{sellers2016}. The fragments are assigned a color in later steps of the rendering process and which might be changed when effects such as lighting are taken into account.
 
 Although these three primitives may seem simple and insignificant they are actually the backbone of graphics rendering. Complex 3D models such as those shown in video games are actually meshes of many small, connected triangles. Squares and other quadrilaterals can be created by connecting two triangles together at their hypotenuses.
 
