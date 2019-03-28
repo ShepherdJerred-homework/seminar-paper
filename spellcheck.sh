@@ -1,3 +1,2 @@
 #!/usr/local/bin/bash
-detex paper.tex | aspell -a
-
+java -jar ~/jars/textidote.jar --html --dict dict.txt --check en paper.tex > report.html
