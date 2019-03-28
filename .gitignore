@@ -300,3 +300,4 @@ Temporary Items
 # End of https://www.gitignore.io/api/macos,latex
 *.pdf
 paper.txt
+*.html
