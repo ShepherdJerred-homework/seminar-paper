@@ -313,7 +313,25 @@ The fragment shader partially determines the color of pixels. Figure \ref{fig:fr
 \end{figure}
 
 \subsection{Textures}
-Textures allows images to be stored and used while rendering. While OpenGL supports many kinds of textures, only standard 2D textures will be covered here. The process for creating a texture follows the same pattern as VBOs. A texture name must first be created and bound, and then data can be loaded into the texture. Textures are bound
+Textures allows images to be stored and used while rendering. While OpenGL supports many kinds of textures, only standard 2D textures will be covered here. The process for creating a texture follows the same pattern as VBOs. A texture name must first be created and bound, and then data can be loaded into the texture. This code is show in Figure \ref{fig:texture-init}. Once the texture is initialized, it can be used in a fragment shader.
+
+The fragment shader uses a special kind of uniform type called a sampler. Samplers represent textures in shaders \cite{sellers2016}. The fragment shader uses a special function called \textit{texture}, which takes a sampler and a coordinate. The coordinate represents where in the texture image the fragment should get its data from. In example \ref{fig:texture-fragment} the shader receives the coordinate from the vertex shader.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[h]{0.49\textwidth}
+        \lstinputlisting[language=Java]{code/texture.java}
+        \caption{Creating a texture buffer and loading image data into it.}
+        \label{fig:texture-init}
+    \end{subfigure}
+    \begin{subfigure}[h]{0.49\textwidth}
+        \lstinputlisting[language=C]{code/texture-fragment.glsl}
+        \caption{Loading texture data in the fragment shader.}
+        \label{fig:square-indexed}
+    \end{subfigure}
+	\caption{Using textures.}
+	\label{fig:texture-fragment}
+\end{figure}
 
 \section{Conclusion}
 With all of these concepts, a basic OpenGL program can be created. Figure \ref{fig:final-product} shows a program\footnote{Full program source available at \url{https://github.com/ShepherdJerred-homework/seminar-application}} that renders a simple textured cube that rotates. It uses all of the previously covered material and most of the code samples used above. While this program is simple, it composes many concepts and lays the foundation for more complex applications. Games can be created with only these concepts; the only further graphics work would be to render more elements and likely make them more complex.
@@ -325,7 +343,7 @@ With all of these concepts, a basic OpenGL program can be created. Figure \ref{f
 	\label{fig:final-product}
 \end{figure}
 
-% TODO this needs to be fleshed out.
+% TODO this could still be better?
 Computer graphics are crucial to providing easy-to-use experiences for users, and in creating modern day entertainment and other visual media. OpenGL allows you to render graphics by writing simple shader programs and feeding the OpenGL pipeline with input data. This data can then efficiently be rendered and displayed on-screen to users. The pipeline can transform input and allows programmers to modify how their input is rendered. While there is a lot of overhead in graphics rendering, it allows the user to get the most out of their graphics hardware.
 
 \clearpage
