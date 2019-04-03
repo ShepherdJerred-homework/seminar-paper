@@ -1,5 +1,7 @@
 \documentclass{article}
 
+% 4200 words
+
 % Reference checking
 % \usepackage{refcheck}
 
@@ -97,12 +99,12 @@
 \section{Introduction}
 Computers have become widespread and have touched many aspects of modern-day life. From new forms of entertainment such as video games to artificial intelligence they have revolutionized the way to work, learn, and play. Computer graphics in particular have been a driving force behind the adoption of computers because they allow users to easily interact with computers. Programmers use computer graphics to display user interfaces, render video games, and even animate entire films. Every day millions of people interact with interfaces on phones, laptops, and other devices that allow them to focus on the work they are doing rather than how they communicate with their device. % TODO maybe this could still be improved
 
-Plenty of tools to manipulate 2D and 3D graphics already exist, such as 3D object editors, image processing applications, UI libraries, and game engines. These are effective tools to quickly get work done, but the user may not know how their work is being accomplished. Without this understanding it may be harder for the programmer to debug or optimize their code, and by learning the lower-level concepts of computer graphics, one is able to better use higher-level abstractions and tools. % TODO this is still a little awkward
+Plenty of tools to manipulate 2D and 3D graphics already exist, such as: 3D object editors, image processing applications, UI libraries, and game engines. These are effective tools to quickly get work done, but the user may not know how their work is being accomplished. Without this understanding it may be harder for the programmer to debug or optimize their code, and by learning the lower-level concepts of computer graphics, one is able to better use higher-level abstractions and tools. % TODO this is still a little awkward
 
-This paper intends to introduce the reader to the broad concepts of graphics processing. This includes the purpose of graphics processing units, why graphics APIs exist, and an introduction to a commonly used cross-platform graphics API --- OpenGL. OpenGL will be discussed so that the reader has an overview of the concepts of OpenGL and can create an OpenGL program. This paper will focus on the use OpenGL version 3.2 which is widely supported and similar to newer versions of OpenGL.
+This paper intends to introduce the reader to the broad concepts of graphics processing. This includes the purpose of graphics processing units, why graphics APIs exist, and an introduction to a commonly used cross-platform graphics API --- OpenGL. OpenGL will be discussed so that the reader has an overview of the concepts of OpenGL, and can create an OpenGL program. This paper will focus on the use OpenGL version 3.2 which is widely supported and is very similar to updated versions of OpenGL.
 
 \section{Background}
-Graphics processing is predisposed towards parallel processing due to the repetitive and independent nature of calculations that it requires \cite[p.~4]{sellers2016}. Graphics processing units (GPUs) were created in order to meet the unique hardware requirements of computer graphics, and are fundamentally different from more traditional central processing units (CPUs). While CPUs generally have a few very fast cores, GPUs take an alternate approach of having a much greater number of slower cores. Figure \ref{fig:architecture} illustrates this difference in architecture, showing the massive difference in arithmetic logic units (ALUs) between CPUs and GPUs. These ALUs give GPUs an edge over CPUs when performing mathematical operations and are a core part of the parallel processing capability that GPUs possess.
+Graphics processing is predisposed towards parallel processing due to the repetitive and independent nature of the calculations that it requires \cite[p.~4]{sellers2016}. Graphics processing units (GPUs) were created in order to meet the unique hardware requirements of computer graphics, and are fundamentally different from more traditional central processing units (CPUs). While CPUs generally have a few very fast cores, GPUs take an alternate approach of having a much greater number of slower cores. Figure \ref{fig:architecture} illustrates this difference in architecture, showing the massive difference in arithmetic logic units (ALUs) between CPUs and GPUs. These ALUs give GPUs an edge over CPUs when performing mathematical operations and are a core part of the parallel processing capability that GPUs possess.
 
 \begin{figure}[h]
     \centering
@@ -148,7 +150,7 @@ Although these three primitives may seem simple and insignificant they are actua
 \end{figure}
 
 \subsection{Matrices}
-A two-dimensional object can easily be drawn by simply defining the x and y coordinates. Three-dimensional objects will not be drawn correctly at this point because the z coordinate does not affect the size of the object. The z coordinate represents how close a point is to a viewer with larger numbers being closer, therefore as the z coordinate increases the object should increase in size as well. This can be fixed by using a projection matrix and matrix multiplication. Each (x, y, z, w) coordinate will be multiplied by the matrix with the result being the location of the coordinate when projected onto the display.
+A two-dimensional object can easily be drawn by simply defining the x and y coordinates. Three-dimensional objects will not be drawn correctly at this point because the z coordinate does not affect the size of the object. The z coordinate represents how close a point is to a viewer with larger numbers being closer, therefore as the z coordinate increases the object should increase in size as well. This can be fixed by using a projection matrix and matrix multiplication. A projection matrix effects what is visible on the screen, and how it is projected onto it \cite{sellers2016}. Each (x, y, z, w) coordinate will be multiplied by the matrix with the result being the location of the coordinate when projected onto the display.
 
 Before the matrix can be created, the aspect ratio, field of view (FOV), z-near, and z-far variables must first be determined. The aspect ratio is the ratio between a display's width and height. z-near and z-far represent the closest and furthest possible z coordinate values respectively. The FOV is the angle of the scene that will be rendered on the screen. Figure \ref{fig:projection} illustrates of these four variables. Figure \ref{fig:matrix} shows an example of a 4x4 projection matrix used for 3D rendering. Orthogonal projection matrices exist for 2D rendering however they are outside of the scope of this paper.
 
@@ -184,7 +186,7 @@ Before the matrix can be created, the aspect ratio, field of view (FOV), z-near,
     \label{fig:matrix}
 \end{figure}
 
-% TODO discuss model matrices and transformations
+While a projection matrix defines how all rendered geometry appears, a model matrix can be used to transform individual elements. A model matrix is again a 4x4 matrix, and it is used to translate, rotate, and scale objects on the screen. Model matrices are very important in 3D rendering, as they allow objects to be positioned precisely in scenes without having to manually calculate vertex locations. Like the projection matrix, the model matrix is applied by multiplying the position of each vertex by the matrix. The result is the new position of the vertex with translation, rotation, and scaling applied.
 
 \section{OpenGL}
 OpenGL is both a specification and a graphics API which is commonly implemented on modern graphics cards. The specification defines how the use of API should effect the graphics card. Like other graphics APIs, this allows users to use the underlying graphics hardware portably. OpenGL's development began at a computer hardware manufacturer named Silicon Graphics Inc. (SGI). SGI created its own proprietary graphics API named IrisGL which was used on its workstations and graphics hardware. IrisGL was cleaned up and formalized into OpenGL. The first version of OpenGL was released to the public as version 1.0 in 1992 \cite{openglwiki2018}. This initial version has been revised many times, with the latest version being 4.6, which was released on July 31st, 2017 \cite{openglwiki2018}.
@@ -238,15 +240,27 @@ VAOs cannot bind more than 4 elements of a VBO array, making it hard to pass lar
 \end{figure}
 
 % TODO revise
-\subsection{VEOs}
-Consider the case of drawing a square. This would require two right triangles of equal dimensions connected at their hypotenuses. Each triangle would only have one unique coordinate, with the other two being shared at the hypotenuses, however right now this would have to be sent as six coordinates as show in Figure \ref{fig:square-coords} instead of only four. While these two extra coordinates may seem insignificant, this inefficient use of graphics memory may cause problems, especially when rendering complex scenes with hundreds or thousands of triangles. This problem can be solved with vertex element objects (VEOs).
+\subsection{Indexed Rendering}
+Consider the case of drawing a square. This would require two right triangles of equal dimensions, each connected at their hypotenuses. Each triangle would only have one unique coordinate, with the other two being shared at the hypotenuses. Right now this would have to be sent as six coordinates as show in Figure \ref{fig:square-coords}, instead of only four. While these two extra coordinates may seem insignificant, this inefficient use of graphics memory may cause problems, especially when rendering complex scenes with hundreds or thousands of triangles. This problem can be solved with indexed rendering.
 
-% TODO go into VEOs and how to use them
+Indexing adds a layer of indirection when rendering. Rather than directly passing the coordinates to draw to OpenGL, a list of indices is passed. OpenGL then uses this list to access the true data in its buffers. The code to create an element buffer is very similar to that of creating VAOs and VBOs, so it will be omitted. Instead, a comparison of the data being passed to OpenGL will be provided.
+
+Figure \ref{fig:square-compare} shows a comparison of the code to draw a square with and without indexing. Notice how on Figure \ref{fig:square-indexed} each vertex is defined once, and then the vertices used for each triangle is defined in a separate array. The numbers in the indices array represents which index in the vertices array should be used when drawing. For example, the value 0 in the indices array refers to the 0th entry in the vertices array, which is the top-left vertex.
 
 \begin{figure}[h]
-    \lstinputlisting[language=Java]{code/square.java}
-    \caption{The coordinates needed to draw a square, assuming the origin is at the top-left of the screen.}
-    \label{fig:square-coords}
+    \centering
+    \begin{subfigure}[h]{0.49\textwidth}
+        \lstinputlisting[language=Java]{code/square.java}
+        \caption{Without indexing}
+        \label{fig:square-coords}
+    \end{subfigure}
+    \begin{subfigure}[h]{0.49\textwidth}
+        \lstinputlisting[language=Java]{code/square-indexed.java}
+        \caption{With indexing.}
+        \label{fig:square-indexed}
+    \end{subfigure}
+	\caption{Creating a square with and without indexing}
+	\label{fig:square-compare}
 \end{figure}
 
 \section{The Rendering Pipeline}
@@ -292,28 +306,27 @@ The main function is where the work is being done. gl\_Position is a special var
 
 The fragment shader partially determines the color of pixels. Figure \ref{fig:fragment-shader} shows a basic fragment shader which receives a color from the vertex shader in Figure \ref{fig:vertex-shader} and outputs the color as-is.
 
-% TODO go into textures
-
 \begin{figure}[h]
 	\lstinputlisting[language=C]{code/fragment.glsl}
 	\caption{A simple fragment shader.}
 	\label{fig:fragment-shader}
 \end{figure}
 
-% TODO revise
-Once all of this is put together, the application is ready to be compiled and a basic OpenGL program can be executed\footnote{Full program source available at \url{https://github.com/ShepherdJerred-homework/seminar-paper-application}}. This application will display a single triangle with its position and color specified by the code calling OpenGL. The output of the application can be seen in Figure \ref{fig:final-product}.
+\subsection{Textures}
+Textures allows images to be stored and used while rendering. While OpenGL supports many kinds of textures, only standard 2D textures will be covered here. The process for creating a texture follows the same pattern as VBOs. A texture name must first be created and bound, and then data can be loaded into the texture. Textures are bound
 
-% TODO make a more impressive demo
+\section{Conclusion}
+With all of these concepts, a basic OpenGL program can be created. Figure \ref{fig:final-product} shows a program\footnote{Full program source available at \url{https://github.com/ShepherdJerred-homework/seminar-application}} that renders a simple textured cube that rotates. It uses all of the previously covered material and most of the code samples used above. While this program is simple, it composes many concepts and lays the foundation for more complex applications. Games can be created with only these concepts; the only further graphics work would be to render more elements and likely make them more complex.
+
 \begin{figure}[h]
     \centering
-    \includegraphics[height=6cm]{triangle}
-	\caption{A triangle rendered from the vertices in Figure \ref{fig:create-vbo}.}
+    \includegraphics[height=8cm]{textured-cube.png}
+	\caption{A spinning, textured cube.}
 	\label{fig:final-product}
 \end{figure}
 
-\section{Conclusion}
 % TODO this needs to be fleshed out.
-Computer graphics are crucial to providing easy-to-use experiences for users and in creating modern day entertainment and other visual media. OpenGL allows you to render graphics by writing simple shader programs and feeding the OpenGL pipeline with input data. This data can then efficiently be rendered and displayed on-screen to users. The pipeline can transform input and allows programmers to modify how their input is rendered.
+Computer graphics are crucial to providing easy-to-use experiences for users, and in creating modern day entertainment and other visual media. OpenGL allows you to render graphics by writing simple shader programs and feeding the OpenGL pipeline with input data. This data can then efficiently be rendered and displayed on-screen to users. The pipeline can transform input and allows programmers to modify how their input is rendered. While there is a lot of overhead in graphics rendering, it allows the user to get the most out of their graphics hardware.
 
 \clearpage
 
